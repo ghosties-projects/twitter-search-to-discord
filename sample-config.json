@@ -1,0 +1,14 @@
+{
+	"listener": {
+		"username": "user",
+		"password": "pass"
+	},
+	"webhook": "https://discord.com/api/webhooks/xxxx/xxxx",
+	"whitelist": [
+		"crypto"
+	],
+	"blacklist": [
+		"test"
+	],
+	"delay": 2500
+}
