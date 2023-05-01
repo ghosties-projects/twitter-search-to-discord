@@ -43,8 +43,7 @@ class Interval {
 
 		this.timeout = timeout.unix();
 
-		const query = `(${client.config.whitelist.join(' OR ')})` + ' ' + client.config.blacklist.map(b => `-${b}`).join(' ') + ' -is:nullcast';
-		const stream = await request(() => client.instance.v2.get(`/search/adaptive.json?q=${encodeURIComponent(query)}&cards_platform=iPhone-13&contributor_details=1&query_source=typed_query&tweet_mode=extended&tweet_search_mode=live&ext=altText%2CeditControl%2Cenrichments%2ChighlightedLabel%2CisBlueVerified%2CmediaColor%2CmediaRestrictions%2CmediaStats%2CpreviousCounts%2CprofileImageShape%2CverifiedType%2CvoiceInfo&include_cards=1&include_carousels=1&include_composer_source=true&include_entities=1&include_ext_edit_control=true&include_ext_enrichments=true&include_ext_is_blue_verified=true&include_ext_is_tweet_translatable=true&include_ext_media_availability=true&include_ext_media_color=true&include_ext_previous_counts=true&include_ext_profile_image_shape=true&include_ext_sensitive_media_warning=1&include_ext_super_follow_metadata=true&include_ext_trusted_friends_metadata=true`));
+		const stream = await request(() => client.instance.v2.get(`/search/adaptive.json?q=${encodeURIComponent(client.config.query)}`));
 
 		const entries = Object.entries(stream.globalObjects?.tweets ?? {});
 		const tweets = entries.filter(([id, payload]) => !this.posted.includes(id) && !payload.source.includes('advertiser-interface'));

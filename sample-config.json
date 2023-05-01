@@ -4,11 +4,6 @@
 		"password": "pass"
 	},
 	"webhook": "https://discord.com/api/webhooks/xxxx/xxxx",
-	"whitelist": [
-		"crypto"
-	],
-	"blacklist": [
-		"test"
-	],
+	"query": "(hello OR hi)",
 	"delay": 2500
 }
