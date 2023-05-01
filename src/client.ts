@@ -3,11 +3,12 @@ import { TwitterApi } from 'twitter-api-v2';
 import { xauthLogin } from 'xauth-login';
 import config from '../config.json';
 import Interval from './interval';
+import moment from 'moment';
 
 export class Client {
 	public instance: InstanceType<typeof TwitterApi>;
+	public started: ReturnType<typeof moment>;
 	public config = config;
-	public started: Date;
 
 	async connect() {
 		const { oauth_token, oauth_token_secret } = await xauthLogin({
@@ -24,7 +25,7 @@ export class Client {
 			accessSecret: oauth_token_secret,
 		});
 
-		this.started = new Date();
+		this.started = moment();
 
 		await Interval.loop();
 	}

@@ -43,14 +43,14 @@ class Interval {
 
 		this.timeout = timeout.unix();
 
-		const stream = await request(() => client.instance.v2.get(`/search/adaptive.json?q=${encodeURIComponent(client.config.query)}`));
+		const stream = await request(() => client.instance.v2.get(`/search/adaptive.json?q=${encodeURIComponent(client.config.query)}&tweet_mode=extended&tweet_search_mode=live`));
 
 		const entries = Object.entries(stream.globalObjects?.tweets ?? {});
-		const tweets = entries.filter(([id, payload]) => !this.posted.includes(id) && !payload.source.includes('advertiser-interface'));
+		const tweets = entries.filter(([id]) => !this.posted.includes(id));
 
 		for (const [id, payload] of tweets) {
 			try {
-				const parsed = new Date(Date.parse((payload as any).created_at));
+				const parsed = moment(Date.parse((payload as any).created_at));
 				const date = moment(parsed);
 
 				if (date.isBefore(client.started)) continue;
@@ -65,8 +65,6 @@ class Interval {
 			} catch (e) {
 				console.error(`Couldn\'t handle tweet ${id} (${e.message})`);
 			}
-
-			await sleep(1000);
 		}
 
 		this.loop();
