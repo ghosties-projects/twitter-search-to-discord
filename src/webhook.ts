@@ -2,7 +2,7 @@ import { RESTPostAPIWebhookWithTokenJSONBody } from 'discord-api-types/v10';
 import sleep from './actions/sleep';
 import client from './client';
 
-class Webhook {
+export class Webhook {
 	constructor(
 		public url: string
 	) { }

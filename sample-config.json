@@ -5,5 +5,9 @@
 	},
 	"webhook": "https://discord.com/api/webhooks/xxxx/xxxx",
 	"query": "(hello OR hi)",
-	"delay": 2500
+	"delay": 2500,
+	"errors": {
+		"catch": true,
+		"webhook": "https://discord.com/api/webhooks/xxxx/xxxx"
+	}
 }
