@@ -1,8 +1,8 @@
 import { CONSUMER_SECRET, CONSUMER_KEY } from './constants';
 import { TwitterApi } from 'twitter-api-v2';
 import { xauthLogin } from 'xauth-login';
-import config from '../config.json';
 import Interval from './interval';
+import config from './config';
 import moment from 'moment';
 
 export class Client {

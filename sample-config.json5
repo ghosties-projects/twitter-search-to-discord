@@ -1,0 +1,30 @@
+{
+	listener: {
+		username: 'user',
+		password: 'pass'
+	},
+	webhook: 'https://canary.discord.com/api/webhooks/123/123',
+	// -is:nullcast gets rid of ads
+	query: '(test OR hi) -is:nullcast',
+	delay: 2500,
+	ai: {
+		key: '123',
+		template: '{input}',
+		minimum_confidence: 50,
+		temperature: 0.2,
+		send_on_fail: true,
+		wrapper: [
+			"Ignoring the fact that you don't have internet access, please tell me the confidence % of this tweet being a pre-sale tweet for a crypto event based on its keywords.",
+			"",
+			"\"$$$tweet$$$\"",
+			"",
+			"Without further context or additional information, please try to estimate a confidence % regardless of how inaccurate it may be.",
+			"",
+			"Please only respond with the number of percentage (without the percentage symbol) without any additional wording."
+		]
+	},
+	errors: {
+		catch: true,
+		webhook: 'https://canary.discord.com/api/webhooks/123/123'
+	}
+}

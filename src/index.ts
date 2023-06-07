@@ -1,12 +1,14 @@
 import { Webhook } from './webhook';
-import config from '../config.json';
+import config from './config';
 import Client from './client';
+import AI from './ai';
 
 Client.connect();
 
 const webhook = new Webhook(config.errors?.webhook);
 
 process.on('uncaughtException', (error, origin) => {
+	console.log(error, origin);
 	if (config.errors.catch) {
 		webhook.send({
 			content: [

@@ -1,6 +1,6 @@
 import { TweetV2, UserV1 } from 'twitter-api-v2';
+import confidence from './actions/confidence';
 import request from './actions/request';
-import sleep from './actions/sleep';
 import Webhook from './webhook';
 import client from './client';
 import moment from 'moment';
@@ -45,7 +45,7 @@ class Interval {
 
 		const stream = await request(() => client.instance.v2.get(`/search/adaptive.json?q=${encodeURIComponent(client.config.query)}&tweet_mode=extended&tweet_search_mode=live`));
 
-		const entries = Object.entries(stream.globalObjects?.tweets ?? {});
+		const entries = Object.entries(stream.globalObjects?.tweets ?? {}) as unknown as [string, TweetV2][];
 		const tweets = entries.filter(([id]) => !this.posted.includes(id));
 
 		for (const [id, payload] of tweets) {
@@ -55,11 +55,12 @@ class Interval {
 
 				if (date.isBefore(client.started)) continue;
 
+				const percentage = await confidence((payload as any).full_text);
+				if (percentage < client.config.ai.minimum_confidence) continue;
+
 				const author = await client.instance.v1.user({ user_id: (payload as any).user_id_str });
 
-				await Webhook.send({
-					content: `https://twitter.com/${author.screen_name}/status/${id}`
-				});
+				await Webhook.send({ content: `https://twitter.com/${author.screen_name}/status/${id}` });
 
 				this.cache(id);
 			} catch (e) {
