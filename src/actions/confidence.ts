@@ -9,7 +9,7 @@ async function confidence(text: string) {
 	const result = Number(response);
 	if (!result || Number.isNaN(result)) {
 		console.log('nope', { confidence: result, text });
-		return 0;
+		return config.ai.send_on_fail ? 100 : 0;
 	}
 
 	console.log({ confidence: result, text });
