@@ -53,10 +53,16 @@ class Interval {
 				const parsed = moment(Date.parse((payload as any).created_at));
 				const date = moment(parsed);
 
-				if (date.isBefore(client.started)) continue;
+				if (date.isBefore(client.started)) {
+					this.cache(id);
+					continue;
+				}
 
 				const percentage = await confidence((payload as any).full_text);
-				if (percentage < client.config.ai.minimum_confidence) continue;
+				if (percentage < client.config.ai.minimum_confidence) {
+					this.cache(id);
+					continue;
+				}
 
 				const author = await client.instance.v1.user({ user_id: (payload as any).user_id_str });
 
